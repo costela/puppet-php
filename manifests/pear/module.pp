@@ -33,7 +33,7 @@ define php::pear::module (
   $repository          = 'pear.php.net',
   $service_autorestart = '',
   $module_prefix       = '',
-  $path                = '/usr/bin:/usr/sbin:/bin:/sbin',
+  $path                = '/usr/bin:/usr/sbin:/bin:/sbin:/opt/csw/bin:/usr/php/5.3/bin',
   $ensure              = 'present',
   $timeout             = 300
   ) {

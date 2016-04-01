@@ -9,4 +9,4 @@ spec/fixtures
 .gemfile.lock
 .bundle
 vendor
-
+Gemfile.lock

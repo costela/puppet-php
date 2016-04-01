@@ -11,6 +11,12 @@ describe 'php' do
     it { should contain_file('php.conf').with_ensure('present') }
   end
 
+  describe 'Test standard installation on Solaris' do
+    let(:facts) { { :osfamily => 'Solaris', :operatingsystemmajrelease => '10' } }
+    it { should contain_package('php').with_ensure('present') }
+    it { should contain_file('php.conf').with_ensure('present') }
+  end
+
   describe 'Test installation of a specific version' do
     let(:params) { {:version => '1.0.42' } }
     it { should contain_package('php').with_ensure('1.0.42') }

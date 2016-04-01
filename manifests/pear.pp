@@ -29,7 +29,7 @@ class php::pear (
   $install_package = true,
   $install_options = [],
   $version         = 'present',
-  $path            = '/usr/bin:/usr/sbin:/bin:/sbin'
+  $path            = '/usr/bin:/usr/sbin:/bin:/sbin:/opt/csw/bin:/usr/php/5.3/bin'
   ) inherits php {
 
   $real_install_options = $install_options ? {

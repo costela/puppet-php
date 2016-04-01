@@ -17,18 +17,27 @@ class php::params {
   $package_devel = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint)/ => 'php5-dev',
     /(?i:SLES|OpenSuSe)/      => 'php5-devel',
+    /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
+      '10'                    => 'CSWphp5-dev',
+      '11'                    => undef,
+    },
     default                   => 'php-devel',
   }
 
   $package_pear = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint)/ => 'php-pear',
     /(?i:SLES|OpenSuSe)/      => 'php5-pear',
+    /(?i:Solaris)/            => undef,
     default                   => 'php-pear',
   }
 
   ### Application related parameters
   $module_prefix = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint|SLES|OpenSuSE)/ => 'php5-',
+    /(?i:Solaris)/                          => $::operatingsystemmajrelease ? {
+      '10'                                  => 'CSWphp5-',
+      '11'                                  => 'web/php-53/extension/php-',
+    },
     default                                 => 'php-',
   }
 
@@ -36,12 +45,17 @@ class php::params {
     /(?i:Ubuntu|Debian|Mint)/             => 'php-',
     /(?i:SLES|OpenSuSe)/                  => 'php5-pear-',
     /(?i:CentOS|RedHat|Scientific|Linux)/ => 'php-pear-',
+    /(?i:Solaris)/                        => undef,
     default                               => 'pear-',
   }
 
   $package = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint)/ => 'php5',
     /(?i:SLES|OpenSuSE)/      => [ 'php5','apache2-mod_php5'],
+    /(?i:Solaris)/            => $::operatingsystemmajrelease ? {
+      '10'                    => ['CSWphp5', 'CSWap2-modphp5'],
+      '11'                    => ['web/php-53', 'web/server/apache-22/module/apache-php53'],
+    },
     default                   => 'php',
   }
 
@@ -49,16 +63,28 @@ class php::params {
   # web service name like apache2, nginx, etc.
   $service = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint|SLES|OpenSuSE)/ => 'apache2',
+    /(?i:Solaris)/                          => $::operatingsystemmajrelease ? {
+      '10'                                  => 'svc:/network/cswapache2:default',
+      '11'                                  => 'svc:/network/http:apache22',
+    },
     default                                 => 'httpd',
   }
 
   $config_dir = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint|SLES|OpenSuSE)/ => '/etc/php5',
-    default                                   => '/etc/php.d',
+    /(?i:Solaris)/                          => $::operatingsystemmajrelease ? {
+      '10'                                  => '/etc/opt/csw/php5',
+      '11'                                  => '/etc/php/5.3',
+    },
+    default                                 => '/etc/php.d',
   }
 
   $config_file = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint|SLES|OpenSuSE)/ => '/etc/php5/apache2/php.ini',
+    /(?i:Solaris)/                          => $::operatingsystemmajrelease ? {
+      '10'                                  => '/etc/opt/csw/php5/php.ini',
+      '11'                                  => '/etc/php/5.3/php.ini',
+    },
     default                                 => '/etc/php.ini',
   }
 

@@ -8,7 +8,7 @@
 define php::pecl::config (
   $value,
   $layer = 'user',
-  $path  = '/usr/bin:/bin:/usr/sbin:/sbin'
+  $path  = '/usr/bin:/bin:/usr/sbin:/sbin:/opt/csw/bin:/usr/php/5.3/bin'
   ) {
 
   include php::pear

@@ -46,7 +46,7 @@ define php::pecl::module (
   $preferred_state     = 'stable',
   $auto_answer         = '\\n',
   $ensure              = present,
-  $path                = '/usr/bin:/usr/sbin:/bin:/sbin',
+  $path                = '/usr/bin:/usr/sbin:/bin:/sbin:/opt/csw/bin:/usr/php/5.3/bin',
   $verbose             = false,
   $version             = '',
   $prefix              = false,
@@ -96,7 +96,11 @@ define php::pecl::module (
         $pcre_dev_package_name = $::osfamily ? {
           'Debian'  => 'libpcre3-dev',
           'RedHat'  => 'pcre-devel',
-          default => 'pcre3-devel',
+          'Solaris' => $::operatingsystemmajrelease ? {
+            '10'    => 'CSWlibpcre-dev',
+            '11'    => 'library/pcre',
+          },
+          default   => 'pcre3-devel',
         }
       if $ensure and !defined(Package[$pcre_dev_package_name]) {
         package { $pcre_dev_package_name : }

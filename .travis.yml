@@ -19,7 +19,6 @@ matrix:
       env: PUPPET_VERSION="~> 2.6.0"
       gemfile: .gemfile
 
-gemfile: .gemfile
 notifications:
   email:
     - al@lab42.it

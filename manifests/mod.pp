@@ -38,7 +38,7 @@
 define php::mod (
   $disable              = false,
   $service_autorestart  = '',
-  $path                 = '/usr/bin:/bin:/usr/sbin:/sbin',
+  $path                 = '/usr/bin:/bin:/usr/sbin:/sbin:/opt/csw/bin:/usr/php/5.3/bin',
   $package              = $php::package
   ) {
 
