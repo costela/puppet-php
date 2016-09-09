@@ -10,6 +10,7 @@ describe 'php::ini' do
       let :facts do
         {
           :operatingsystem => 'Debian',
+          :osfamily        => 'Debian',
         }
       end
 
@@ -51,6 +52,36 @@ describe 'php::ini' do
       end
     end
 
+    context 'On a RedHat OS' do
+      let :facts do
+        {
+          :operatingsystem => 'Redhat',
+          :osfamily        => 'RedHat',
+        }
+      end
+
+      let :pre_condition do
+        [
+          'service { "httpd": }',
+          'class { "php": }',
+        ]
+      end
+
+      context 'with defaults' do
+        let :params do
+          {
+            :name        => 'dynatrace',
+            :target      => 'dynatrace.ini',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/php.d/dynatrace.ini') }
+
+        it { should contain_file('/etc/php.d/dynatrace.ini').that_notifies('Service[httpd]') }
+      end
+
+    end
   end
 
   context 'Test without restart' do
@@ -58,6 +89,7 @@ describe 'php::ini' do
       let :facts do
         {
           :operatingsystem => 'Debian',
+          :osfamily        => 'Debian',
         }
       end
 
@@ -98,6 +130,37 @@ describe 'php::ini' do
         it { should_not contain_file('/etc/php5/customsapi/conf.d/dynatrace.ini').that_notifies('Service[apache2]') }
 
       end
+    end
+
+    context 'On a RedHat OS' do
+      let :facts do
+        {
+          :operatingsystem => 'Redhat',
+          :osfamily        => 'RedHat',
+        }
+      end
+
+      let :pre_condition do
+        [
+          'service { "httpd": }',
+          'class { "php": service_autorestart => false, }',
+        ]
+      end
+
+      context 'with defaults' do
+        let :params do
+          {
+            :name        => 'dynatrace',
+            :target      => 'dynatrace.ini',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/php.d/dynatrace.ini') }
+
+        it { should_not contain_file('/etc/php.d/dynatrace.ini').that_notifies('Service[httpd]') }
+      end
+
     end
   end
 
