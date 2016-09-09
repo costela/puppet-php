@@ -33,6 +33,8 @@ define php::ini (
 
   include php
 
+  $realservice_autorestart = $::php::realservice_autorestart
+
   $http_sapi = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint|SLES|OpenSuSE)/ => '/apache2/',
     default                                 => '/',
@@ -45,13 +47,13 @@ define php::ini (
       content => template($template),
       require => Package[$package],
       before  => File["${config_dir}/cli/conf.d/${target}"],
+      notify  => $realservice_autorestart,
     }
 
     file { "${config_dir}/cli/conf.d/${target}":
       ensure  => 'present',
       content => template($template),
       require => Package[$package],
-      notify  => Service[$service],
     }
 
   }else{
@@ -59,7 +61,7 @@ define php::ini (
       ensure  => 'present',
       content => template($template),
       require => Package[$package],
-      notify  => Service[$service],
+      notify  => $realservice_autorestart,
     }
 
   }
